@@ -1,5 +1,6 @@
 # use Ganache's forked mainnet mode as the default network
 networks:
+  # default: development
   default: mainnet-fork
 
 # automatically fetch contract sources from Etherscan
@@ -13,7 +14,11 @@ dependencies:
 # path remapping to support OpenZepplin imports with NPM-style path
 compiler:
   solc:
-    version: 0.5.17
+#    version: 0.6.10
+    version: null
+    optimizer:
+      enabled: true
+      runs: 180
     remappings:
       - "@openzeppelinV2=OpenZeppelin/openzeppelin-contracts@2.5.1"
       - "@openzeppelinV3=OpenZeppelin/openzeppelin-contracts@3.1.0"

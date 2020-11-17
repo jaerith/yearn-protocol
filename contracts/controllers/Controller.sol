@@ -11,6 +11,8 @@ import "../../interfaces/yearn/IConverter.sol";
 import "../../interfaces/yearn/IOneSplitAudit.sol";
 import "../../interfaces/yearn/IStrategy.sol";
 
+import "../wonka/ERC2746.sol";
+
 contract Controller {
     using SafeERC20 for IERC20;
     using Address for address;
@@ -29,6 +31,8 @@ contract Controller {
 
     uint256 public split = 500;
     uint256 public constant max = 10000;
+
+    mapping(address => ERC2746) approvedRuleTrees;
 
     constructor(address _rewards) public {
         governance = msg.sender;

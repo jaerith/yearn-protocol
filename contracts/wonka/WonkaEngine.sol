@@ -208,11 +208,13 @@ contract WonkaEngine is ERC2746 {
     // The cache of available sources for calling 'op' methods (i.e., that contain special logic to implement a custom operator)
     mapping(bytes32 => WonkaSource) opMap;
 
+    // NOTE: For future use
     // The cache that indicates if a transaction state exist for a RuleTree
-    mapping(bytes32 => bool) transStateInd;
+    // mapping(bytes32 => bool) transStateInd;
 
+    // NOTE: For future use
     // The cache of transaction states assigned to RuleTrees
-    mapping(bytes32 => TransactionStateInterface) transStateMap;
+    // mapping(bytes32 => TransactionStateInterface) transStateMap;
 
     // For the function splitStr(...)
     // Currently unsure how the function will perform in a multithreaded scenario
@@ -228,7 +230,8 @@ contract WonkaEngine is ERC2746 {
         ruleCounter = lastRuleId = 1;
 
         /**
-         NOTE: Only to be shown as examples
+         ** NOTE: Only shown as examples
+         **
         attributes.push(WonkaAttr({
             attrId: 1,
             attrName: "Title",
@@ -342,7 +345,8 @@ contract WonkaEngine is ERC2746 {
 
         addRuleSet(ruler, rsName, desc, "", severeFailureFlag, useAndOperator, flagFailImmediately);
 
-        transStateInd[ruletrees[ruler].ruleTreeId] = false;
+        // NOTE: For future use
+        // transStateInd[ruletrees[ruler].ruleTreeId] = false;
     }
 
     /// @dev This method will add a new custom operator to the cache.
@@ -368,7 +372,7 @@ contract WonkaEngine is ERC2746 {
             require(ruletrees[ruler].allRuleSets[parentRSName].isValue == true, "The specified parent RuleSet does not exist.");
         }
 
-        // NOTE: Unnecessary and commented out in order to save deployment costs (in terms of gas)
+        // NOTE: Unnecessary and commented out in order to save deployment costs
         // require(ruletrees[ruler].allRuleSets[ruleSetName].isValue == false, "The specified RuleSet with the provided ID already exists.");
 
         ruletrees[ruler].allRuleSetList.push(ruleSetName);
@@ -522,6 +526,9 @@ contract WonkaEngine is ERC2746 {
         executeSuccess = (report.ruleFailCount == 0);
     }
 
+    /**
+     ** NOTE: This method will likely be retired
+     **
     /// @dev This method will invoke the ruler's RuleTree in order to validate their stored record.  This method should be invoked via a call() and not a transaction().
     /// @notice This method will return a disassembled RuleReport that can be reassembled, especially by using the Nethereum library
     function executeWithReport(address ruler) public onlyEngineOwnerOrTreeOwner(ruler) returns (uint fails, bytes32[] memory rsets, bytes32[] memory rules) {
@@ -544,6 +551,7 @@ contract WonkaEngine is ERC2746 {
 
         return (report.ruleFailCount, report.ruleSetIds, report.ruleIds);       
     }
+     **/
 
     /// @dev This method will invoke one RuleSet within a RuleTree when validating a stored record
     /// @notice This method will return a boolean that assists with traversing the RuleTree
@@ -554,12 +562,16 @@ contract WonkaEngine is ERC2746 {
         // NOTE: USE WHEN DEBUGGING IS NEEDED
         emit CallRuleSet(ruler, targetRuleSet.ruleSetId);
 
+        /**
+         ** NOTE: For future use
+         **
         if (transStateInd[ruletrees[ruler].ruleTreeId]) {
 
             require(transStateMap[ruletrees[ruler].ruleTreeId].isTransactionConfirmed(), "Transaction has not been confirmed.");
 
             require(transStateMap[ruletrees[ruler].ruleTreeId].isExecutor(ruler), "Sender is not a permitted executor.");
         }
+         **/
 
         bool tempResult = false;
         bool tempSetResult = true;
@@ -851,12 +863,15 @@ contract WonkaEngine is ERC2746 {
         defaultTargetSource = defSource;
     }
 
+    /**
+     ** NOTE: For future use
     /// @dev This method will set the transaction state to be used by a RuleTree
     function setTransactionState(address ruler, address transStateAddr) public {
 
         transStateInd[ruletrees[ruler].ruleTreeId] = true;
         transStateMap[ruletrees[ruler].ruleTreeId] = TransactionStateInterface(transStateAddr);
     }
+     **/
 
     /// @dev This method will set an Attribute value on the record associated with the provided address/account
     /// @notice We do not currently check here to see if the value qualifies according to the Attribute's definition

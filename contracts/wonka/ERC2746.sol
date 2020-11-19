@@ -143,4 +143,11 @@ interface ERC2746 {
         @param _owner           Owner/ID of the RuleTree
     */
     function removeRuleTree(address _owner) external returns (bool);    
+
+    //
+    // POSSIBLE METHODS AS ADDITION TO STANDARD
+    //
+    function getValueOnRecord(address ruler, bytes32 key) external returns(string memory);
+
+    function getValueOnRecordAsAddr(address ruler, bytes32 key) external returns(address);
 }

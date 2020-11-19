@@ -32,7 +32,7 @@ contract Controller {
     uint256 public split = 500;
     uint256 public constant max = 10000;
 
-    mapping(address => ERC2746) approvedRuleTrees;
+    mapping(address => address) strategyRuleTrees;
 
     constructor(address _rewards) public {
         governance = msg.sender;
@@ -64,6 +64,12 @@ contract Controller {
     function setGovernance(address _governance) public {
         require(msg.sender == governance, "!governance");
         governance = _governance;
+    }
+
+    function setRuleTree(address _token, address _ruleTree) public {
+        require(msg.sender == strategist || msg.sender == governance, "!strategist");
+        require(vaults[_token] != address(0), "vault0");
+        strategyRuleTrees[_token] = _ruleTree;
     }
 
     function setVault(address _token, address _vault) public {
@@ -114,6 +120,14 @@ contract Controller {
             IERC20(_token).safeTransfer(_strategy, _amount);
         }
         IStrategy(_strategy).deposit();
+    }
+
+    function calculateStrategy(address _token) public {        
+        address _ruleTree = strategyRuleTrees[_token];        
+        ERC2746(_ruleTree).executeRuleTree(strategist);
+
+        address _determinedStrat = ERC2746(_ruleTree).getValueOnRecordAsAddr(strategist, "strategy");
+        setStrategy(_token, _determinedStrat);
     }
 
     function balanceOf(address _token) external view returns (uint256) {

@@ -562,16 +562,16 @@ contract WonkaEngine is ERC2746 {
         // NOTE: USE WHEN DEBUGGING IS NEEDED
         emit CallRuleSet(ruler, targetRuleSet.ruleSetId);
 
-        /**
-         ** NOTE: For future use
-         **
-        if (transStateInd[ruletrees[ruler].ruleTreeId]) {
-
-            require(transStateMap[ruletrees[ruler].ruleTreeId].isTransactionConfirmed(), "Transaction has not been confirmed.");
-
-            require(transStateMap[ruletrees[ruler].ruleTreeId].isExecutor(ruler), "Sender is not a permitted executor.");
-        }
-         **/
+        //
+        // NOTE: For future use
+        //
+        // if (transStateInd[ruletrees[ruler].ruleTreeId]) {
+        //
+        //    require(transStateMap[ruletrees[ruler].ruleTreeId].isTransactionConfirmed(), "Transaction has not been confirmed.");
+        //
+        //    require(transStateMap[ruletrees[ruler].ruleTreeId].isExecutor(ruler), "Sender is not a permitted executor.");
+        //}
+        //
 
         bool tempResult = false;
         bool tempSetResult = true;
@@ -798,8 +798,7 @@ contract WonkaEngine is ERC2746 {
     }
 
     /// @dev This method will return the value for an Attribute that is currently stored within the ruler's record
-    /// @notice This method should only be used for debugging purposes.
-    function getValueOnRecord(address ruler, bytes32 key) public returns(string memory) { 
+    function getValueOnRecord(address ruler, bytes32 key) public override returns(string memory) { 
 
         // NOTE: Likely to retire this check
         // require(ruletrees[ruler].isValue, "The provided user does not own anything on this instance of the contract.");
@@ -819,6 +818,12 @@ contract WonkaEngine is ERC2746 {
             else
                 return blankValue;
         }
+    }
+
+    /// @dev This method will return the value (as an address) for an Attribute that is currently stored within the ruler's record
+    function getValueOnRecordAsAddr(address ruler, bytes32 key) public override returns(address) { 
+        
+        return getValueOnRecord(ruler, key).parseAddr();
     }
 
 	/// @dev This method will indicate whether or not a particular source exists
@@ -851,7 +856,6 @@ contract WonkaEngine is ERC2746 {
 
     /// @dev Default implementation for interface
     function removeRuleTree(address _owner) public override returns (bool) {
-
         return true;
     }
 

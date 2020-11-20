@@ -150,4 +150,6 @@ interface ERC2746 {
     function getValueOnRecord(address ruler, bytes32 key) external returns(string memory);
 
     function getValueOnRecordAsAddr(address ruler, bytes32 key) external returns(address);
+
+    function setValueOnRecord(address ruler, bytes32 key, string calldata value) external returns(string memory);
 }

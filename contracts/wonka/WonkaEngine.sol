@@ -879,7 +879,7 @@ contract WonkaEngine is ERC2746 {
 
     /// @dev This method will set an Attribute value on the record associated with the provided address/account
     /// @notice We do not currently check here to see if the value qualifies according to the Attribute's definition
-    function setValueOnRecord(address ruler, bytes32 key, string memory value) public returns(string memory) { 
+    function setValueOnRecord(address ruler, bytes32 key, string memory value) public override returns(string memory) { 
 
         // NOTE: Likely to retire this check
         // require(ruletrees[ruler].isValue, "The provided user does not own anything on this instance of the contract.");
